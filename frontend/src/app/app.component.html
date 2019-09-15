@@ -1,0 +1,19 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Rotas e Pedágios.
+  </h1>
+</div>
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="9">
+  <agm-marker *ngFor="let item of waypoints" [latitude]="item.Latitude" [longitude]="item.Longitude"></agm-marker>
+</agm-map>
+
+<div class="pac-card" id="pac-card">
+  <div>
+    <div id="title">Definir Rota</div>
+  </div>
+  <div id="pac-container">
+    <input id="pac-input" type="text" placeholder="Origem">
+  </div>
+
+</div>
