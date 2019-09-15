@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { google } from '@agm/core/services/google-maps-types';
+import {Location, Appearance} from '@angular-material-extensions/google-maps-autocomplete';
+// import {} from '@types/googlemaps';
+import PlaceResult = google.maps.places.PlaceResult;
 
 @Component({
   selector: 'app-root',
@@ -12,8 +14,11 @@ export class AppComponent {
   lat: any;
   lng: any;
   map: any;
+  zoom = 10;
   infoWindow: any;
   waypoints: any;
+  public appearance = Appearance;
+  public selectedAddress: PlaceResult;
 
   constructor(public httpClient: HttpClient) {}
 
@@ -22,7 +27,7 @@ export class AppComponent {
     
   }
   //Get My Location
-  async myLocation() {
+  myLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition((pos: Position) => {
         this.lat = pos.coords.latitude;
@@ -45,19 +50,18 @@ export class AppComponent {
     this.httpClient.get('assets/data/waypoints.json')
     .subscribe(results => {
       this.waypoints = results;
-      console.log(this.waypoints)
       this.myLocation();
     })
   }
-  //Enter route
-  myRoute() {
-    let input = document.getElementById('pac-input');
-    let autocomplete = new google.maps.places.Autocomplete(input);
-
-    autocomplete.setFields(
-      ['address_components', 'geometry', 'icon', 'name']);
-    
-    this.infoWindow = new google.maps.infoWindow();
-    
+  //Autocomplete Input
+  onAutocompleteSelected(result: PlaceResult) {
+    console.log('onAutocompleteSelected: ', result);
+  }
+ 
+  onLocationSelected(location: Location) {
+    console.log('onLocationSelected: ', location);
+    this.lat = location.latitude;
+    this.lng = location.longitude;
+    this.zoom = 15;
   }
 }
