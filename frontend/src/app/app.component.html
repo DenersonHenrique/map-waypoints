@@ -23,8 +23,9 @@
 <!-- Mapa - Componente do pacote agm-angular-google-maps para o framework Angular, responsável pela exibição do mapa.-->
 <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
   <!-- Componente doa pacote agm-direction para o framework Angular, responsável pela criação das Rotas. -->
-  <agm-direction *ngIf="origin && destination" [origin]="origin" [destination]="destination">
+  <agm-direction *ngIf="origin && destination" [origin]="origin" [destination]="destination" (onResponse)="onResponse($event)" #mapPage>
     <!-- Componente do pacote agm-angular-google-maps, responsável pela marcação dos pontos no mapa. -->
-    <agm-marker *ngFor="let item of waypoints" [latitude]="item.Latitude" [longitude]="item.Longitude" [iconUrl]="waypointsIcon" [title]="item.Descricao"></agm-marker>
+    <agm-marker *ngFor="let item of waypoints" [latitude]="item.Latitude" [longitude]="item.Longitude" [iconUrl]="waypointsIcon" [title]="item.Descricao"
+    [visible]="item.Visible"></agm-marker>
   </agm-direction>
 </agm-map>

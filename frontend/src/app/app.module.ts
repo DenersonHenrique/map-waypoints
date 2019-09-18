@@ -23,7 +23,7 @@ import { MaterialModule } from './material.module';
     BrowserAnimationsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBxPygC3tBioOdXGfLnj9Q6gT-QGKGLXhk&libraries',
-      libraries: ['places']
+      libraries: ['places', 'drawing']
     }),
     MatGoogleMapsAutocompleteModule.forRoot(),
     AgmDirectionModule,//Módulo pacote agmr Rotas
