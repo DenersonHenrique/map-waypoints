@@ -85,7 +85,7 @@ export class AppComponent {
   //Verificar se coordenadas estão na rota(polygon).
   onResponse(map) {
     console.log(map);
-    let route = map.routes[0].legs[0];//Objeto com coordenadas da direction. Linha do mapa
+    let route = map.routes[0].overview_path;//Objeto com coordenadas da direction. Linha do mapa.
 
     let cidadesTeste = [//Objeto de Teste
       { lat: -19.9166804, lng: -43.9344971 },//BH
@@ -95,8 +95,8 @@ export class AppComponent {
 
     let polygon = new google.maps.Polygon({ paths: route });//Montar polygon para função de contains.
 
-    this.waypoints.forEach(element => {//Percorrer array para definir marcações
-      let location = new google.maps.LatLng(element.Latitude, element.Longitude)
+    this.waypoints.forEach(element => {//Percorrer array para definir marcações.
+      let location = new google.maps.LatLng(element.Latitude, element.Longitude);
       element.Visible = google.maps.geometry.poly.containsLocation(location, polygon);//Verificar se elemento está no polygon.
       console.log(element.Visible);
     });
