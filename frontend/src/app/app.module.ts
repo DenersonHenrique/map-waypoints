@@ -3,14 +3,13 @@ import { HttpClientModule} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
 //Modulos para utilizar google Maps no Angular
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
 import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
 
 import { AppComponent } from './app.component';
-import { MaterialModule } from './material.module';
+import { MaterialModule } from './material.module';//Módulo Angular Material
 
 @NgModule({
   declarations: [
@@ -22,8 +21,8 @@ import { MaterialModule } from './material.module';
     FlexLayoutModule,
     BrowserAnimationsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBxPygC3tBioOdXGfLnj9Q6gT-QGKGLXhk&libraries',
-      libraries: ['places', 'drawing']
+      apiKey: 'CHAVE_API_MAPS',//Adicionar chave api google com credencias de Directions, Places e Markers.
+      libraries: ['places', 'drawing']//Bibliotecas agm Angular.
     }),
     MatGoogleMapsAutocompleteModule.forRoot(),
     AgmDirectionModule,//Módulo pacote agmr Rotas

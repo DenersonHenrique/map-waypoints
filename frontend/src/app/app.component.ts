@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location, Appearance } from '@angular-material-extensions/google-maps-autocomplete';
-// import {} from '@types/googlemaps';
 import PlaceResult = google.maps.places.PlaceResult;
 
 @Component({
@@ -15,20 +14,19 @@ export class AppComponent {
   lng: any;
   map: any;
   zoom = 10;
+  waypoints: any;//Informações de pontos.(Pedágios da planilha).
   infoWindow: any;
-  waypoints: any;
+  appearance = Appearance;//Aparência Inputs(Angular Material)
+  selectedAddress: PlaceResult;
+  origin: any;//Origem para componente de Direction.
+  destination: any;//Destino para componente de Direction
   waypointsIcon = {
-    url: 'assets/images/estrada-com-pedagio.svg', scaledSize: {//ícone de pedágio.
+    url: 'assets/images/flag.png', scaledSize: {//ícone de pedágio.
       width: 20,
       height: 20
     }
   }
-  appearance = Appearance;
-  selectedAddress: PlaceResult;
-  origin: any;//Origem para componente de Direction.
-  destination: any;//Destino para componente de Direction
-  visibleMarker: boolean;
-  @ViewChild('mapPage', { static: false }) mapPage: any;
+  @ViewChild('mapPage', { static: false }) mapPage: any;//Informações do elemento html.
 
   constructor(public httpClient: HttpClient) { }
 
@@ -62,14 +60,10 @@ export class AppComponent {
         this.myLocation();//Iniciar na localização do Usuário ao iniciar aplicação.
       })
   }
-  //Autocomplete Input
-  //Exibir resultados com base nas informações inseridas nos inputs de origem e destino.
-  onAutocompleteSelected(result: PlaceResult) {
-    console.log('onAutocompleteSelected: ', result);
-  }
+  //Autocomplete Input. Exibir resultados no select com base nas informações nos inputs de origem e destino.
+  onAutocompleteSelected(result: PlaceResult) { }
   //Definir ponto de origem Selecionado.
   onLocationSelectedOrigin(location: Location) {
-    console.log('onLocationSelected: ', location);
     this.lat = location.latitude;
     this.lng = location.longitude;
     this.zoom = 15;//Definir zoom do maps exibido.
@@ -77,29 +71,31 @@ export class AppComponent {
   }
   //Definir ponto de Destino selecionado.
   onLocationSelectedDestination(location: Location) {
-    console.log('onLocationSelected: ', location);
     this.lat = location.latitude;
     this.lng = location.longitude;
     this.destination = { lat: this.lat, lng: this.lng };
   }
   //Verificar se coordenadas estão na rota(polygon).
   onResponse(map) {
-    console.log(map);
     let route = map.routes[0].overview_path;//Objeto com coordenadas da direction. Linha do mapa.
-
-    let cidadesTeste = [//Objeto de Teste
-      { lat: -19.9166804, lng: -43.9344971 },//BH
-      { lat: -22.9068617, lng: -43.1729426 },//RJ
-      { lat: -23.5507845, lng: -46.6338611 }//SP
-    ];
-
-    let polygon = new google.maps.Polygon({ paths: route });//Montar polygon para função de contains.
-
+    let polygon = new google.maps.Polygon({ paths: route });//Montar polygon para rota.
+    let arrayPolygon = polygon.getPath();
+    // Percorrer waypoints verificando quais estão na rota.
     this.waypoints.forEach(element => {//Percorrer array para definir marcações.
       let location = new google.maps.LatLng(element.Latitude, element.Longitude);
-      element.Visible = google.maps.geometry.poly.containsLocation(location, polygon);//Verificar se elemento está no polygon.
-      console.log(element.Visible);
+      element.Visible = google.maps.geometry.poly.containsLocation(location, polygon);//Verificar se elemento está no polygon   
     });
-
   }
+
 }
+
+
+// Melhoria Futura ====================================
+// for (const item of arrayPolygon.getArray()) {
+//   //Melhorar Precisão dos pontos. Exibir pontos com no máximo 1000 metros da linha da rota.
+//   // if (google.maps.geometry.spherical.computeDistanceBetween(location, item) <= 1000) {
+//   //   element.Visible = true;
+//   // }
+//   // Função para verificar se waypoint está na rota.
+//   // console.log(element.Visible);
+// }
